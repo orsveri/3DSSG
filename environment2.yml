@@ -1,0 +1,19 @@
+channels:
+  - pytorch-lts
+  - nvidia
+  - conda-forge
+  - defaults
+  - open3d-admin
+  - pyg
+dependencies:
+  - python=3.8
+  - cudatoolkit=11.1
+  - pytorch
+  - pyg
+  - onnxruntime
+  - tensorboard=1.15.0
+  - trimesh
+  - pip=21.0.1
+  - open3d
+  - plyfile
+  - tqdm

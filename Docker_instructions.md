@@ -8,8 +8,11 @@ This instruction is tested on:
 ### 1. Install Docker
 `apt install docker.io`
 
-check installation
+Check installation
 `docker run hello-world`
+
+You also need GPU, so you need to set up docker for it:
+[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)
 
 ### 2. Prepare docker file
 Create a new directory and a file without extension in it. Name the file **Dockerfile**.
@@ -38,9 +41,10 @@ docker build -t <your_image_name> - < Dockerfile
 ```
 Then run your image and mount directory with repository and data:
 ```
-docker run -it --volume <mount_path_on_your_machine>:<full_mount_path_in_docker> <your_image_name>
-#  -it for interactive session (your terminal will go into Docker container)
-#  -d for detached session (Docker container will run in the background)
+docker run -it --gpus all --volume <mount_path_on_your_machine>:<full_mount_path_in_docker> <your_image_name>
+#  "-it" for interactive session (your terminal will go into Docker container)
+#  "-d" for detached session (Docker container will run in the background even if you'll close the terminal window)
+# "--gpus all" to use all gpus available (you probably can set something like "0" or "1,3", but I haven't an opportunity to test it)
 ```
 for example:
 ```

@@ -16,3 +16,5 @@ files/*.json
 files/*.txt
 files/
 *.zip
+
+.idea

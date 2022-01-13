@@ -17,11 +17,15 @@ def Parser(add_help=True):
     parser = argparse.ArgumentParser(description='Process some integers.', formatter_class = argparse.ArgumentDefaultsHelpFormatter,
                                      add_help=add_help)
     parser.add_argument('--scans', type=str,default='/media/sc/SSD1TB/dataset/3RScan/data/3RScan/')
-    parser.add_argument('--type', type=str, default='train', choices=['train', 'test', 'validation'], help="allow multiple rel pred outputs per pair",required=False)
+    # /3D/Datasets/1_3RScan/from_3DSSG/
+    parser.add_argument('--type', type=str, default='train', choices=['train', 'test', 'validation', 'test_from_dir'], help="allow multiple rel pred outputs per pair",required=False)
+    # validation, test, train
     parser.add_argument('--pth_out', type=str,default='../data/tmp', help='pth to output directory',required=True)
+    # /3D/Projects/Grant_Review/1_SGF/3DSSG/data/3RScan_ScanNet20
     parser.add_argument('--relation', type=str,default='relationships', choices=['relationships_extended', 'relationships'])
     parser.add_argument('--target_scan', type=str, default='', help='')
-    parser.add_argument('--label_type', type=str,default='3RScan160', choices=['3RScan160'], help='label',required=False)
+    parser.add_argument('--label_type', type=str,default='3RScan160', choices=['3RScan160', 'ScanNet20'], help='label',required=False)
+    # ScanNet20
     
     # options
     parser.add_argument('--mapping',type=int,default=1,
@@ -304,16 +308,21 @@ if __name__ == '__main__':
         
     ''' Read Scan and their type=['train', 'test', 'validation'] '''
     scan2type = {}
-    with open(define.Scan3RJson_PATH, "r") as read_file:
-        data = json.load(read_file)
-        for scene in data:
-            scan2type[scene["reference"]] = scene["type"]
-            for scan in scene["scans"]:
-                scan2type[scan["reference"]] = scene["type"]
+    if args.type == "test_from_dir":
+    	scan2type = {d: "test_from_dir" for d in os.listdir(args.scans) if os.path.isdir(os.path.join(args.scans, d))}
+    else:
+        with open(define.Scan3RJson_PATH, "r") as read_file:
+	        data = json.load(read_file)
+	        for scene in data:
+	            scan2type[scene["reference"]] = scene["type"]
+	            for scan in scene["scans"]:
+	                scan2type[scan["reference"]] = scene["type"]
                 
     target_scan=[]
     if args.target_scan != '':
         target_scan = util.read_txt_to_list(args.target_scan)
+    if args.type == "test_from_dir":
+        target_scan = list(scan2type.keys())
             
     valid_scans=list()
     relationships_new = dict()
@@ -326,8 +335,8 @@ if __name__ == '__main__':
         # for s in data["scans"]:
             scan_id = s["scan"]
             
-            if len(target_scan) ==0:
-                if scan2type[scan_id] != args.type: 
+            if len(target_scan) == 0:
+                if args.type != "test_from_dir" and scan2type[scan_id] != args.type: 
                     if args.verbose:
                         print('skip',scan_id,'not validation type')
                     continue

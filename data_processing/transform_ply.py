@@ -49,6 +49,13 @@ def read_transform_matrix():
     return rescan2ref
 
 def main():
+    skip_missing = input("skip missing scans and continue? y if skip, n if stop: ")
+    if skip_missing == 'y': skip_missing = True
+    elif skip_missing == 'n': skip_missing = False
+    else: 
+        print('answer can be only "y" or "n". Exit.')
+        exit()  
+    
     pool = mp.Pool(opt.thread)
     pool.daemon = True
         
@@ -67,6 +74,13 @@ def main():
                     continue
                 file_in = os.path.join(define.DATA_PATH, scan_id, define.LABEL_FILE_NAME_RAW)
                 file_out = os.path.join(define.DATA_PATH, scan_id, define.LABEL_FILE_NAME)                
+                
+                if not os.path.exists(file_in):
+                    print("There's no scan: ", scan_id)
+                    if skip_missing:
+                        continue
+                    else:
+                        exit()
                 
                 if os.path.exists(file_out) is True: continue
                 if scan_id in rescan2ref: # if not we have a hidden test scan
@@ -100,6 +114,14 @@ def main():
                     continue
                 file_in = os.path.join(define.DATA_PATH, scan_id, define.LABEL_FILE_NAME_RAW)
                 file_out = os.path.join(define.DATA_PATH, scan_id, define.LABEL_FILE_NAME)
+                
+                if not os.path.exists(file_in):
+                    print("There's no scan: ", scan_id)
+                    if skip_missing:
+                        continue
+                    else:
+                        exit()
+                
                 if os.path.exists(file_out): continue
                 if opt.thread > 1:
                     process_text.append(text)

@@ -1,0 +1,18 @@
+{
+  "scans": "/3D/Datasets/1_3RScan/test_sequence",
+  "type": "test_from_dir",
+  "pth_out": "/3D/Projects/Grant_Review/1_SGF/3DSSG/example_test",
+  "relation": "relationships",
+  "target_scan": "",
+  "label_type": "ScanNet20",
+  "mapping": 1,
+  "v2": 1,
+  "verbose": false,
+  "debug": 0,
+  "search_method": "BBOX",
+  "radius_receptive": 0.5,
+  "split": 0,
+  "radius_seed": 1,
+  "min_segs": 5,
+  "split_method": "BBOX"
+}

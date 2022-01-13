@@ -175,11 +175,9 @@ class SGFNDataset (data.Dataset):
                 dataset_loading_3RScan(self.root, self.mconfig.selection, split)                
         self.relationNames = sorted(relationNames)
         self.classNames = sorted(classNames)
-        
         if not multi_rel_outputs:
             if 'none' not in self.relationNames:
                 self.relationNames.append('none')
-
 
         wobjs, wrels, o_obj_cls, o_rel_cls = compute_weight_occurrences.compute(self.classNames, self.relationNames, data,selected_scans)
         self.w_cls_obj = torch.from_numpy(np.array(o_obj_cls)).float().to(self.config.DEVICE)
