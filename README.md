@@ -34,7 +34,7 @@ or install the dependnecies manually
 # Main env
 conda create -n 3dssg pytorch=1.8.9 cudatoolkit=10.2 -c pytorch tensorboard trimesh -c conda-forge
 # Onnxruntime
-pip install onnxruntime
+pip install onnxruntime=1.7.2
 # Pytorch Geometric
 export CUDA=10.2
 pip install torch-scatter -f https://pytorch-geometric.com/whl/torch-1.8.0+${CUDA}.html
@@ -45,6 +45,13 @@ pip install torch-geometric
 # open3d
 pip install open3d
 ```
+# Preparation
+Download data
+```
+cd files
+bash preparation.sh
+```
+
 
 Instructions to use a Docker image: [instructions](Docker_instructions.md)
 
@@ -122,5 +129,7 @@ If you find the code useful please consider citing our [paper](https://arxiv.org
 }
 ```
 
+# Acknowledgement
+This work is supported by the German Research Foundation (DFG, project number 407378162) and the Bavarian State Ministry of Education, Science and the Arts in the framework of the Centre Digitisation Bavaria (ZD.B).
 
 [1]: https://arxiv.org/pdf/2103.14898.pdf
